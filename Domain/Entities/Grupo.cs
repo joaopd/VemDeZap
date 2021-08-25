@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Base;
-using System;
+using Domain.Enum;
 
 namespace Domain.Entities
 {
@@ -7,6 +7,6 @@ namespace Domain.Entities
     {
         public string Nome { get; private set; }
         public Usuario Usuario { get; private set; }
-        public int Nicho { get; private set; }
+        public EnumNicho Nicho { get; private set; }
     }
 }
