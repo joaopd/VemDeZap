@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities.Base;
+using System;
 
 namespace Domain.Entities
 {
-    public class Grupo
+    public class Grupo : EntidadeBase
     {
-        public Guid Id { get; private set; }
         public string Nome { get; private set; }
+        public Usuario Usuario { get; private set; }
         public int Nicho { get; private set; }
     }
 }
