@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Domain.Commands.Usuario.AdicionarUsuario
+namespace Domain.Commands.UsuarioCommand.AdicionarUsuario
 {
     public class AdicionarUsuarioCommand : IRequest<Response>
     {
