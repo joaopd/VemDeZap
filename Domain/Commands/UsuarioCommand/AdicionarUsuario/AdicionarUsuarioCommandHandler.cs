@@ -10,11 +10,14 @@ namespace Domain.Commands.UsuarioCommand.AdicionarUsuario
     public class AdicionarUsuarioCommandHandler : Notifiable, IRequestHandler<AdicionarUsuarioCommand, Response>
     {
         private readonly IRepositorioUsuario _repositorioUsuario;
+        private readonly IMediator _mediator;
 
-        public AdicionarUsuarioCommandHandler(IRepositorioUsuario repositorioUsuario)
+        public AdicionarUsuarioCommandHandler(IRepositorioUsuario repositorioUsuario, IMediator mediator)
         {
             _repositorioUsuario = repositorioUsuario;
+            _mediator = mediator;
         }
+
         public async Task<Response> Handle(AdicionarUsuarioCommand request, CancellationToken cancellationToken)
         {
             //validar se requst e valido
@@ -32,9 +35,21 @@ namespace Domain.Commands.UsuarioCommand.AdicionarUsuario
             }
 
             Usuario usuario = new Usuario(request.PrimeiroNome,request.UltimoNome,request.Email, request.Senha);
+            AddNotifications(usuario);
+            if (IsInvalid())
+            {
+                return new Response(this);
+            }
 
-            _repositorioUsuario.Adicionar(usuario);
+            usuario = _repositorioUsuario.Adicionar(usuario);
 
+            var response = new Response(this, usuario);
+
+            AdicionarUsuarioNotification adicionarUsuarioNotification = new AdicionarUsuarioNotification(usuario);
+
+            await _mediator.Publish(adicionarUsuarioNotification);
+
+            return await Task.FromResult(response);
         }
     }
 }
